@@ -1,0 +1,108 @@
+// Colors follow obsidian-latex-suite's bracket colors, tuned per theme mode.
+:root {
+    --lsx-b0: #2f8fd8;
+    --lsx-b1: #c2449c;
+    --lsx-b2: #3c9a3c;
+    --lsx-cmd: #a0522d;
+    --lsx-unmatched: #e5484d;
+    --lsx-match-bg: rgba(255, 196, 0, .35);
+    --lsx-stop: var(--b3-theme-primary, #3575f0);
+}
+
+html[data-theme-mode="dark"] {
+    --lsx-b0: #47b8ff;
+    --lsx-b1: #ff6ad5;
+    --lsx-b2: #73e063;
+    --lsx-cmd: #e5a46a;
+    --lsx-match-bg: rgba(255, 210, 60, .3);
+}
+
+.lsx-backdrop {
+    position: absolute;
+    z-index: 0;
+    margin: 0;
+    overflow: hidden;
+    pointer-events: none;
+    border-style: solid;
+    border-color: transparent;
+    white-space: pre-wrap;
+    overflow-wrap: break-word;
+    word-break: normal;
+}
+
+textarea.lsx-textarea {
+    position: relative;
+    z-index: 1;
+    color: transparent !important;
+    background-color: transparent !important;
+
+    &::selection {
+        color: transparent;
+    }
+}
+
+.lsx-b0 {
+    color: var(--lsx-b0);
+}
+
+.lsx-b1 {
+    color: var(--lsx-b1);
+}
+
+.lsx-b2 {
+    color: var(--lsx-b2);
+}
+
+.lsx-cmd {
+    color: var(--lsx-cmd);
+}
+
+.lsx-comment {
+    opacity: .55;
+    font-style: italic;
+}
+
+.lsx-unmatched {
+    color: var(--lsx-unmatched);
+    text-decoration: underline wavy var(--lsx-unmatched);
+}
+
+.lsx-match {
+    background-color: var(--lsx-match-bg);
+    border-radius: 2px;
+    font-weight: bold;
+}
+
+.lsx-stop {
+    border-bottom: 1px dashed var(--lsx-stop);
+}
+
+.lsx-stop-empty {
+    position: relative;
+
+    &::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: -1px;
+        border-left: 2px solid var(--lsx-stop);
+        opacity: .55;
+    }
+}
+
+.lsx-setting-code {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 8px;
+    width: 100%;
+
+    textarea {
+        font-family: var(--b3-font-family-code);
+        font-size: 13px;
+        line-height: 1.5;
+        resize: vertical;
+        white-space: pre;
+    }
+}

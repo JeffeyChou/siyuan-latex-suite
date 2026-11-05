@@ -1,0 +1,44 @@
+{
+  "name": "siyuan-latex-suite",
+  "author": "JeffeyChou",
+  "url": "https://github.com/JeffeyChou/siyuan-latex-suite",
+  "version": "0.1.0",
+  "minAppVersion": "3.8.5",
+  "backends": [
+    "all"
+  ],
+  "frontends": [
+    "desktop",
+    "desktop-window",
+    "mobile",
+    "browser-desktop",
+    "browser-mobile"
+  ],
+  "disabledInPublish": true,
+  "displayName": {
+    "default": "LaTeX Suite",
+    "zh-CN": "LaTeX Suite 公式助手"
+  },
+  "description": {
+    "default": "Fast LaTeX in the formula editor: snippets, auto-fraction, tabout, matrix shortcuts, auto-enlarged and colored brackets.",
+    "zh-CN": "在公式编辑弹窗里快速写 LaTeX：片段、自动分式、Tab 跳出、矩阵快捷键、自动放大括号、彩色括号与匹配高亮。"
+  },
+  "readme": {
+    "default": "README.md",
+    "zh-CN": "README.zh-CN.md"
+  },
+  "icon": "icon.png",
+  "funding": {
+    "custom": []
+  },
+  "keywords": [
+    "latex",
+    "math",
+    "katex",
+    "snippets",
+    "formula",
+    "公式",
+    "数学",
+    "片段"
+  ]
+}
