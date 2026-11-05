@@ -22,6 +22,9 @@ export interface Config {
     colorBrackets: boolean;
     matchBrackets: boolean;
     highlightCommands: boolean;
+    textTriggers: boolean;
+    inlineTrigger: string;
+    blockTrigger: string;
     fractionSymbol: string;
     breakingChars: string;
     fractionExcluded: string;

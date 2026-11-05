@@ -1,6 +1,6 @@
 {
   "name": "siyuan-latex-suite",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "LaTeX Suite for SiYuan: snippets, auto-fraction, tabout, auto-enlarge and colored brackets in the formula editor",
   "main": "index.js",
   "scripts": {

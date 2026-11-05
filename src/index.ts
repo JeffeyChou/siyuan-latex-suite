@@ -3,6 +3,8 @@ import {
     Setting,
     showMessage,
 } from "siyuan";
+import {openReference} from "./reference";
+import {handleTextInput} from "./text_triggers";
 import "./index.scss";
 import {buildEngine, DEFAULT_CONFIG, DEFAULT_SNIPPETS, DEFAULT_VARIABLES} from "./config";
 import {Config, Controller, Engine, Host} from "./controller";
@@ -30,7 +32,7 @@ class Session {
     private backdrop: HTMLDivElement = null;
     private ro: ResizeObserver = null;
 
-    constructor(private ta: HTMLTextAreaElement, private engine: () => Engine, inline: boolean) {
+    constructor(private ta: HTMLTextAreaElement, private engine: () => Engine, inline: boolean, ref: {label: string; open: () => void}) {
         const host: Host = {
             value: () => ta.value,
             selection: () => [ta.selectionStart, ta.selectionEnd],
@@ -58,12 +60,32 @@ class Session {
         if (cfg.colorBrackets || cfg.matchBrackets || cfg.highlightCommands) {
             this.mountBackdrop();
         }
+        this.addReferenceButton(ref.label, ref.open);
         ta.addEventListener("beforeinput", () => this.ctl.setHint(ta.selectionStart));
         ta.addEventListener("input", (e: InputEvent) => this.ctl.onChange(e.inputType));
         ta.addEventListener("scroll", () => this.syncScroll());
         for (const type of ["keyup", "mouseup", "focus", "blur"]) {
             ta.addEventListener(type, () => this.render());
         }
+    }
+
+    private addReferenceButton(label: string, open: () => void) {
+        const refresh = this.ta.closest(".protyle-util")?.querySelector("[data-type=\"refresh\"]");
+        if (!refresh) {
+            return;
+        }
+        const btn = document.createElement("button");
+        btn.className = "block__icon block__icon--show b3-tooltips b3-tooltips__n";
+        btn.setAttribute("data-type", "lsx-reference");
+        btn.setAttribute("aria-label", label);
+        btn.innerHTML = "<svg><use xlink:href=\"#iconHelp\"></use></svg>";
+        btn.addEventListener("click", (e) => {
+            e.stopPropagation();
+            open();
+        });
+        const space = document.createElement("span");
+        space.className = "fn__space";
+        refresh.before(btn, space);
     }
 
     onSelectionChange() {
@@ -160,6 +182,12 @@ export default class LatexSuitePlugin extends Plugin {
         document.addEventListener("focusin", this.onFocusIn, true);
         document.addEventListener("keydown", this.onKeyDown, true);
         document.addEventListener("selectionchange", this.onSelectionChange);
+        document.addEventListener("input", this.onInput, true);
+        this.addCommand({
+            langKey: "reference",
+            hotkey: "",
+            callback: () => this.openReference(),
+        });
         const active = document.activeElement;
         if (active instanceof HTMLTextAreaElement) {
             this.attach(active);
@@ -170,7 +198,19 @@ export default class LatexSuitePlugin extends Plugin {
         document.removeEventListener("focusin", this.onFocusIn, true);
         document.removeEventListener("keydown", this.onKeyDown, true);
         document.removeEventListener("selectionchange", this.onSelectionChange);
+        document.removeEventListener("input", this.onInput, true);
     }
+
+    openReference(onClose?: () => void) {
+        openReference(this.engine.snippets, this.tr, onClose);
+    }
+
+    private onInput = (e: InputEvent) => {
+        const cfg = this.engine.cfg;
+        if (cfg.textTriggers) {
+            handleTextInput(e, cfg.inlineTrigger.trim(), cfg.blockTrigger.trim());
+        }
+    };
 
     private attach(ta: HTMLTextAreaElement): Session | null {
         let s = this.sessions.get(ta);
@@ -181,7 +221,10 @@ export default class LatexSuitePlugin extends Plugin {
         if (!kind || ta.readOnly) {
             return null;
         }
-        s = new Session(ta, () => this.engine, kind === "inline");
+        s = new Session(ta, () => this.engine, kind === "inline", {
+            label: this.tr.reference,
+            open: () => this.openReference(() => ta.isConnected && ta.focus()),
+        });
         this.sessions.set(ta, s);
         return s;
     }
@@ -285,14 +328,21 @@ export default class LatexSuitePlugin extends Plugin {
             setting.addItem({title: tr[key], description: tr[`${key}Desc`], direction: "column", actionElement: wrap});
         };
         for (const key of ["snippets", "autofraction", "tabout", "exitOnTab", "matrix", "enlarge", "autoPair",
-            "colorBrackets", "matchBrackets", "highlightCommands"] as (keyof Config)[]) {
+            "colorBrackets", "matchBrackets", "highlightCommands", "textTriggers"] as (keyof Config)[]) {
             toggle(key);
         }
+        text("inlineTrigger");
+        text("blockTrigger");
         text("fractionSymbol");
         text("breakingChars", cfg.breakingChars.replace(/\t/g, "\\t"));
         text("fractionExcluded");
         text("matrixEnvs");
         text("enlargeTriggers");
+        const refBtn = document.createElement("button");
+        refBtn.className = "b3-button b3-button--outline fn__flex-center fn__size200";
+        refBtn.textContent = tr.reference;
+        refBtn.addEventListener("click", () => this.openReference());
+        setting.addItem({title: tr.reference, description: tr.referenceDesc, actionElement: refBtn});
         code("snippetSource", DEFAULT_SNIPPETS, 18);
         code("variableSource", DEFAULT_VARIABLES, 6);
         setting.open(tr.title);

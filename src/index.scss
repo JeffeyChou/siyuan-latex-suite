@@ -106,3 +106,100 @@ textarea.lsx-textarea {
         white-space: pre;
     }
 }
+
+.lsx-ref {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    height: 100%;
+    padding: 12px 16px 16px;
+    box-sizing: border-box;
+}
+
+.lsx-ref__bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.lsx-ref__filters {
+    display: flex;
+    gap: 4px;
+
+    .b3-button {
+        padding: 4px 10px;
+    }
+
+    .lsx-ref__on {
+        background-color: var(--b3-theme-primary);
+        color: var(--b3-theme-on-primary);
+    }
+}
+
+.lsx-ref__hint {
+    font-size: 12px;
+    color: var(--b3-theme-on-surface);
+}
+
+.lsx-ref__list {
+    flex: 1;
+    min-height: 0;
+    overflow: auto;
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 13px;
+    }
+
+    th {
+        position: sticky;
+        top: 0;
+        background-color: var(--b3-theme-background);
+        text-align: left;
+        font-weight: 600;
+    }
+
+    th, td {
+        padding: 6px 8px;
+        border-bottom: 1px solid var(--b3-border-color);
+        vertical-align: top;
+    }
+
+    td:first-child {
+        white-space: nowrap;
+    }
+
+    code {
+        font-family: var(--b3-font-family-code);
+        white-space: pre-wrap;
+        word-break: break-all;
+    }
+}
+
+.lsx-ref__desc {
+    margin-top: 2px;
+    font-size: 12px;
+    color: var(--b3-theme-on-surface);
+}
+
+.lsx-ref__fn {
+    font-style: italic;
+    color: var(--b3-theme-on-surface);
+}
+
+.lsx-ref__tag {
+    display: inline-block;
+    margin: 0 4px 2px 0;
+    padding: 0 6px;
+    border-radius: 4px;
+    background-color: var(--b3-theme-surface);
+    font-size: 12px;
+    white-space: nowrap;
+}
+
+.lsx-ref__empty {
+    padding: 24px;
+    text-align: center;
+    color: var(--b3-theme-on-surface);
+}

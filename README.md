@@ -25,6 +25,8 @@ The main features of [obsidian-latex-suite](https://github.com/artisticat1/obsid
 
 - **Auto-enlarge brackets**: brackets around `\sum`, `\int`, `\frac` and the like become `\left( … \right)`.
 - **Colored and matched brackets**: brackets are colored by depth, unmatched ones are red, the pair at the cursor is highlighted.
+- **New formulas from the text**: type `mk` in a paragraph for a new inline formula, or `dm` alone in an empty paragraph for a math block; the editor opens right away. The triggers can be changed or turned off.
+- **Snippet reference**: every snippet in use, searchable and filtered by type (auto, Tab, visual, regex). Open it with the ? button in the formula popup, from the command palette ("Snippet reference"), or from the settings.
 
 <img src="https://raw.githubusercontent.com/JeffeyChou/siyuan-latex-suite/main/docs/brackets.gif" width="512" alt="Brackets around a sum grow to \left( \right); colored brackets and the pair at the cursor highlighted">
 
@@ -32,7 +34,7 @@ Snippets, variables and every feature switch are in the plugin settings. The sni
 
 ## Notes
 
-- Only the formula popup is affected, not the text or code blocks.
+- Apart from `mk` / `dm`, only the formula popup is affected; code, links and tags never trigger.
 - Snippets do not fire while an IME is composing; switch to an English layout inside formulas.
 - The snippet definition is JavaScript that runs locally; only paste snippets you trust.
 - The default snippets are adapted from obsidian-latex-suite (MIT), without its text-mode ones; KaTeX has no `\cancelto`, so `K` gives `\bcancel`.

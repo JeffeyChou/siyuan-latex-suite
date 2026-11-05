@@ -2,7 +2,7 @@
   "name": "siyuan-latex-suite",
   "author": "JeffeyChou",
   "url": "https://github.com/JeffeyChou/siyuan-latex-suite",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "minAppVersion": "3.8.5",
   "backends": [
     "all"

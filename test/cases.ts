@@ -1,6 +1,6 @@
 import {Config, Controller, Engine, Host} from "../src/controller";
 import {DEFAULT_CONFIG, buildEngine} from "../src/config";
-import {pairAtCursor, pairBrackets, tokenize} from "../src/engine";
+import {matchTextTrigger, pairAtCursor, pairBrackets, tokenize} from "../src/engine";
 
 class FakeHost implements Host {
     v = "";
@@ -182,6 +182,15 @@ run("frac inside paren tabs", "(x/y<Tab><Tab>", "\\left(\\frac{x}{y}\\right)|");
     type(h, "<BS>pmata<Tab>b");
     expect("stale frame dropped", show(h), "\\begin{pmatrix}\na & b|\n\\end{pmatrix}");
 }
+
+// Text triggers
+expect("mk after space", String(matchTextTrigger("area mk", "area mk", "mk", "dm")), "inline");
+expect("mk at start", String(matchTextTrigger("mk", "mk more", "mk", "dm")), "inline");
+expect("mk inside word", String(matchTextTrigger("bookmk", "bookmk", "mk", "dm")), "null");
+expect("mk after CJK", String(matchTextTrigger("面积mk", "面积mk", "mk", "dm")), "inline");
+expect("dm alone", String(matchTextTrigger("dm", " dm ", "mk", "dm")), "block");
+expect("dm with text", String(matchTextTrigger("x dm", "x dm", "mk", "dm")), "null");
+expect("triggers off", String(matchTextTrigger("mk", "mk", "", "")), "null");
 
 // Bracket pairing
 {

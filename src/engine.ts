@@ -418,3 +418,21 @@ export function moveRange(r: Range, from: number, oldTo: number, newTo: number, 
         r.end = Math.max(r.end + delta, newTo);
     }
 }
+
+// Text triggers outside formulas ("mk", "dm").
+export type TextTrigger = "inline" | "block";
+
+// before: the text node up to the caret; blockText: the whole paragraph text.
+export function matchTextTrigger(before: string, blockText: string, inline: string, block: string): TextTrigger | null {
+    if (block && blockText.trim() === block && before.endsWith(block)) {
+        return "block";
+    }
+    if (inline && before.endsWith(inline)) {
+        const prev = before.charAt(before.length - inline.length - 1);
+        // Not inside a word ("bookmk") and not right after a backslash.
+        if (!/[A-Za-z0-9\\]/.test(prev)) {
+            return "inline";
+        }
+    }
+    return null;
+}
